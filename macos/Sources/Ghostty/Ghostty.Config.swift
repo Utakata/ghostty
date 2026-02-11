@@ -268,6 +268,32 @@ extension Ghostty {
             return String(cString: ptr)
         }
 
+        var fontFamily: String? {
+            guard let config = self.config else { return nil }
+            var v: UnsafePointer<Int8>? = nil
+            let key = "font-family"
+            guard ghostty_config_get(config, &v, key, UInt(key.lengthOfBytes(using: .utf8))) else { return nil }
+            guard let ptr = v else { return nil }
+            return String(cString: ptr)
+        }
+
+        var fontSize: Double {
+            guard let config = self.config else { return 12 }
+            var v: Double = 12
+            let key = "font-size"
+            _ = ghostty_config_get(config, &v, key, UInt(key.lengthOfBytes(using: .utf8)))
+            return v
+        }
+
+        var theme: String? {
+            guard let config = self.config else { return nil }
+            var v: UnsafePointer<Int8>? = nil
+            let key = "theme"
+            guard ghostty_config_get(config, &v, key, UInt(key.lengthOfBytes(using: .utf8))) else { return nil }
+            guard let ptr = v else { return nil }
+            return String(cString: ptr)
+        }
+
         var macosWindowButtons: MacOSWindowButtons {
             let defaultValue = MacOSWindowButtons.visible
             guard let config = self.config else { return defaultValue }
