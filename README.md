@@ -71,7 +71,7 @@ The high-level ambitious plan for the project, in order:
 |  4  | Richer windowing features -- multi-window, tabbing, panes |   ✅   |
 |  5  | Native Platform Experiences (i.e. Mac Preference Panel)   |   ⚠️   |
 |  6  | Cross-platform `libghostty` for Embeddable Terminals      |   ⚠️   |
-|  7  | Windows Terminals (including PowerShell, Cmd, WSL)        |   ❌   |
+|  7  | Windows Terminals (including PowerShell, Cmd, WSL)        |   ⚠️   |
 |  N  | Fancy features (to be expanded upon later)                |   ❌   |
 
 Additional details for each step in the big roadmap below:
@@ -134,6 +134,7 @@ in Zig but we do a lot of platform-native things:
   would expect such as real windowing, menu bars, a settings GUI, etc.
 - macOS uses a true Metal renderer with CoreText for font discovery.
 - The Linux app is built with GTK.
+- The Windows app is a native Win32 application.
 
 There are more improvements to be made. The macOS settings window is still
 a work-in-progress. Similar improvements will follow with Linux.
