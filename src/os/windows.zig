@@ -31,6 +31,104 @@ pub const WAIT_FAILED = windows.WAIT_FAILED;
 pub const FALSE = windows.FALSE;
 pub const TRUE = windows.TRUE;
 
+// User32 types and constants
+pub const WNDCLASSEXW = extern struct {
+    cbSize: windows.UINT,
+    style: windows.UINT,
+    lpfnWndProc: windows.WNDPROC,
+    cbClsExtra: windows.INT = 0,
+    cbWndExtra: windows.INT = 0,
+    hInstance: windows.HINSTANCE,
+    hIcon: ?windows.HICON,
+    hCursor: ?windows.HCURSOR,
+    hbrBackground: ?windows.HBRUSH,
+    lpszMenuName: ?windows.LPCWSTR,
+    lpszClassName: windows.LPCWSTR,
+    hIconSm: ?windows.HICON,
+};
+
+pub const MSG = extern struct {
+    hwnd: ?windows.HWND,
+    message: windows.UINT,
+    wParam: windows.WPARAM,
+    lParam: windows.LPARAM,
+    time: windows.DWORD,
+    pt: windows.POINT,
+    lPrivate: windows.DWORD,
+};
+
+pub const PAINTSTRUCT = extern struct {
+    hdc: windows.HDC,
+    fErase: windows.BOOL,
+    rcPaint: windows.RECT,
+    fRestore: windows.BOOL,
+    fIncUpdate: windows.BOOL,
+    rgbReserved: [32]windows.BYTE,
+};
+
+pub const CREATESTRUCTW = extern struct {
+    lpCreateParams: windows.LPVOID,
+    hInstance: windows.HINSTANCE,
+    hMenu: ?windows.HMENU,
+    hwndParent: ?windows.HWND,
+    cy: windows.INT,
+    cx: windows.INT,
+    y: windows.INT,
+    x: windows.INT,
+    style: windows.LONG,
+    lpszName: windows.LPCWSTR,
+    lpszClass: windows.LPCWSTR,
+    dwExStyle: windows.DWORD,
+};
+
+pub const CS_HREDRAW = 0x0002;
+pub const CS_VREDRAW = 0x0001;
+pub const IDC_ARROW: windows.LPCWSTR = @ptrFromInt(32512);
+pub const WS_OVERLAPPEDWINDOW = 0x00CF0000;
+pub const WS_VISIBLE = 0x10000000;
+pub const CW_USEDEFAULT: windows.INT = @as(windows.INT, @bitCast(@as(windows.UINT, 0x80000000)));
+pub const WM_NULL = 0x0000;
+pub const WM_DESTROY = 0x0002;
+pub const WM_PAINT = 0x000F;
+pub const WM_NCCREATE = 0x0081;
+pub const GWLP_USERDATA = -21;
+pub const COLOR_WINDOW = 5;
+
+// user32 functions
+pub const user32 = struct {
+    pub extern "user32" fn GetMessageW(lpMsg: *MSG, hWnd: ?windows.HWND, wMsgFilterMin: windows.UINT, wMsgFilterMax: windows.UINT) callconv(windows.WINAPI) windows.BOOL;
+    pub extern "user32" fn TranslateMessage(lpMsg: *const MSG) callconv(windows.WINAPI) windows.BOOL;
+    pub extern "user32" fn DispatchMessageW(lpMsg: *const MSG) callconv(windows.WINAPI) windows.LRESULT;
+    pub extern "user32" fn PostThreadMessageW(idThread: windows.DWORD, Msg: windows.UINT, wParam: windows.WPARAM, lParam: windows.LPARAM) callconv(windows.WINAPI) windows.BOOL;
+    pub extern "user32" fn RegisterClassExW(lpwcx: *const WNDCLASSEXW) callconv(windows.WINAPI) windows.ATOM;
+    pub extern "user32" fn CreateWindowExW(
+        dwExStyle: windows.DWORD,
+        lpClassName: windows.LPCWSTR,
+        lpWindowName: windows.LPCWSTR,
+        dwStyle: windows.DWORD,
+        x: windows.INT,
+        y: windows.INT,
+        nWidth: windows.INT,
+        nHeight: windows.INT,
+        hWndParent: ?windows.HWND,
+        hMenu: ?windows.HMENU,
+        hInstance: windows.HINSTANCE,
+        lpParam: ?windows.LPVOID,
+    ) callconv(windows.WINAPI) ?windows.HWND;
+    pub extern "user32" fn DestroyWindow(hWnd: windows.HWND) callconv(windows.WINAPI) windows.BOOL;
+    pub extern "user32" fn DefWindowProcW(hWnd: windows.HWND, Msg: windows.UINT, wParam: windows.WPARAM, lParam: windows.LPARAM) callconv(windows.WINAPI) windows.LRESULT;
+    pub extern "user32" fn PostQuitMessage(nExitCode: windows.INT) callconv(windows.WINAPI) void;
+    pub extern "user32" fn BeginPaint(hWnd: windows.HWND, lpPaint: *PAINTSTRUCT) callconv(windows.WINAPI) windows.HDC;
+    pub extern "user32" fn EndPaint(hWnd: windows.HWND, lpPaint: *const PAINTSTRUCT) callconv(windows.WINAPI) windows.BOOL;
+    pub extern "user32" fn FillRect(hDC: windows.HDC, lprc: *const windows.RECT, hbr: windows.HBRUSH) callconv(windows.WINAPI) windows.INT;
+    pub extern "user32" fn LoadCursorW(hInstance: ?windows.HINSTANCE, lpCursorName: windows.LPCWSTR) callconv(windows.WINAPI) ?windows.HCURSOR;
+    pub extern "user32" fn SetWindowLongPtrW(hWnd: windows.HWND, nIndex: windows.INT, dwNewLong: windows.LONG_PTR) callconv(windows.WINAPI) windows.LONG_PTR;
+    pub extern "user32" fn GetWindowLongPtrW(hWnd: windows.HWND, nIndex: windows.INT) callconv(windows.WINAPI) windows.LONG_PTR;
+    pub extern "user32" fn InvalidateRect(hWnd: windows.HWND, lpRect: ?*const windows.RECT, bErase: windows.BOOL) callconv(windows.WINAPI) windows.BOOL;
+    pub extern "user32" fn GetCursorPos(lpPoint: *windows.POINT) callconv(windows.WINAPI) windows.BOOL;
+    pub extern "user32" fn ScreenToClient(hWnd: windows.HWND, lpPoint: *windows.POINT) callconv(windows.WINAPI) windows.BOOL;
+};
+
 pub const exp = struct {
     pub const HPCON = windows.LPVOID;
 
