@@ -544,6 +544,12 @@ pub fn add(
         switch (self.config.app_runtime) {
             .none => {},
             .gtk => try self.addGtkNg(step),
+            .windows => {
+                step.linkSystemLibrary("user32");
+                step.linkSystemLibrary("d3d11");
+                step.linkSystemLibrary("dwrite");
+                step.linkSystemLibrary("dxgi");
+            },
         }
     }
 

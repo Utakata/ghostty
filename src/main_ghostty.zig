@@ -23,6 +23,9 @@ const MainReturn = switch (build_config.artifact) {
     else => void,
 };
 
+pub const WinMain = if (comptime build_config.app_runtime == .windows)
+    @import("apprt/windows/main.zig").WinMain else void;
+
 pub fn main() !MainReturn {
     // We first start by initializing our global state. This will setup
     // process-level state we need to run the terminal. The reason we use
