@@ -71,7 +71,7 @@ The high-level ambitious plan for the project, in order:
 |  4  | Richer windowing features -- multi-window, tabbing, panes |   ✅   |
 |  5  | Native Platform Experiences (i.e. Mac Preference Panel)   |   ⚠️   |
 |  6  | Cross-platform `libghostty` for Embeddable Terminals      |   ⚠️   |
-|  7  | Windows Terminals (including PowerShell, Cmd, WSL)        |   ❌   |
+|  7  | Windows Terminals (including PowerShell, Cmd, WSL)        |   ⚠️   |
 |  N  | Fancy features (to be expanded upon later)                |   ❌   |
 
 Additional details for each step in the big roadmap below:
@@ -137,6 +137,14 @@ in Zig but we do a lot of platform-native things:
 
 There are more improvements to be made. The macOS settings window is still
 a work-in-progress. Similar improvements will follow with Linux.
+
+#### Windows Terminals (including PowerShell, Cmd, WSL)
+
+Native Windows support is actively being implemented in the `src/apprt/windows/` layer.
+We strictly avoid generic cross-platform UI wrappers and instead use a native Win32 message loop
+for thread-safe input handling. The backend is powered by DirectX 11 for rendering (including
+an enterprise-grade recovery state machine for `DXGI_ERROR_DEVICE_REMOVED`) and DirectWrite for
+font discovery. All COM objects are strictly managed via custom RAII wrappers to guarantee zero memory leaks.
 
 #### Cross-platform `libghostty` for Embeddable Terminals
 
